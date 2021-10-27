@@ -17,8 +17,7 @@ def get_words_from_api():
         print("Something went wrong while downloading words")
         exit(-1)
     else:
-        print("Completed")
-        print()
+        print("Completed\n")
         return response.json()
 
 
@@ -32,6 +31,11 @@ def find_indices(word, letter):
     return indices
 
 
+def end_if_won():
+    print("Good Job, you won")
+    sys.exit(0)
+
+
 def show_info():
     print()
     print(user_word)
@@ -40,23 +44,26 @@ def show_info():
     print()
 
 
+word = random.choice(get_words_from_api()).lower()
+
+
 def validated_input(used_letters):
     pattern = r'[a-zA-Z]+'
     while True:
-        letter = input("Type a letter: ")
-        match = re.findall(pattern, letter)
-
+        user_input = input("Type a letter or a whole word: ")
+        match = re.findall(pattern, user_input)
         if len(match) == 0:
-            print("You can input only letter (A-Z and a-z)")
-        elif len(letter) != 1:
-            print("You have to input only one letter. Try again")
-        elif letter in used_letters:
+            print("You can input only letter or letters if you want to type a whole word (A-Z and a-z)")
+        elif len(user_input) == len(word) and user_input == word:
+            end_if_won()
+        elif len(user_input) != 1:
+            print("You have to input only one letter or a whole word. Try again")
+        elif user_input in used_letters:
             print("You've already used that letter")
         else:
-            return letter
+            return user_input
 
 
-word = random.choice(get_words_from_api()).lower()
 print("Your word consist of " + str(len(word)) + " letters")
 
 for _ in word:
@@ -83,7 +90,6 @@ while True:
             user_word[index1] = letter
 
         if "".join(user_word) == word:
-            print("Good Job, you won")
-            sys.exit(0)
+            end_if_won()
 
     show_info()

@@ -1,4 +1,7 @@
-# Implementation of binary search al and a proof that naive search is slower
+# Implementation of binary search and naive search and compare times of searching
+import random
+import time
+
 
 def naive_search(list, target):
     for i in range(len(list)):
@@ -26,3 +29,22 @@ def binary_search(list, target, low=None, high=None):
         # target > list[midpoint]
         return binary_search(list, target, midpoint + 1, high)
 
+
+if __name__ == '__main__':
+    list_len = 5000
+    sorted_list = set()
+    while len(sorted_list) < list_len:
+        sorted_list.add(random.randint(-2*list_len, 2*list_len))
+    sorted_list = sorted(list(sorted_list))
+
+    start = time.time()
+    for target in sorted_list:
+        naive_search(sorted_list, target)
+    end = time.time()
+    print("Naive search time is equal to: ", (end - start)/list_len, " seconds")
+
+    start = time.time()
+    for target in sorted_list:
+        binary_search(sorted_list, target)
+    end = time.time()
+    print("Binary search time is equal to: ", (end - start)/list_len, " seconds")

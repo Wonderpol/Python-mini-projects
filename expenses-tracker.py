@@ -78,4 +78,6 @@ if __name__ == "__main__":
             elif choice == 2:
                 add_expense(month)
             elif choice == 3:
-                show_stats()
+                show_stats(month)
+            else:
+                exit(-1)
